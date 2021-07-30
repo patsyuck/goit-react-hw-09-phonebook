@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import {BrowserRouter as Router, Switch, Redirect} from 'react-router-dom';
-import { MyLoader } from './components/Loader';
+import MyLoader from './components/Loader/Loader';
 import Menu from './components/Menu/Menu';
 import {getCurrentUser} from './redux/authorization/authorizationActions'
 import PrivateRoute from './components/Menu/PrivateRoute';
