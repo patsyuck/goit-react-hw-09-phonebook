@@ -1,72 +1,73 @@
-import React, { Component, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { postRegistration } from '../../redux/authorization/authorizationActions'
 import './Page.css'
 
-class LoginPage extends Component {
-    state = {
-        name: '',
-        email: '',
-        password: ''
-    }
+function LoginPage() {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const dispatch = useDispatch()
 
-    handleChange = ({ target: { name, value } }) => {
-        this.setState({[name]: value})
-    }
+    const handleName = useCallback(({ target }) => {
+        setName(target.value)
+    }, [])
+
+    const handleEmail = useCallback(({ target }) => {
+        setEmail(target.value)
+    }, [])
+
+    const handlePassword = useCallback(({ target }) => {
+        setPassword(target.value)
+    }, [])
     
-    handleSubmit = (event) => {
+    const handleSubmit = useCallback((event) => {
         event.preventDefault()
-        this.props.onSubmit(this.state)
-        this.setState({name: '', email: '', password: ''})
-     }
-    
-    render() {
-        const { name, email, password } = this.state
-        
-        return (
-            <div>
-                <h1>Registration Page</h1>
-                <form
-                    className="form"
-                    onSubmit={this.handleSubmit}
-                    autoComplete="off"
-                >
-                    <label className="formLabel">
-                        Name
-                        <input
-                            type="text"
-                            name="name"
-                            value={name}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <label className="formLabel">
-                        Email
-                        <input
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <label className="formLabel">
-                        Password
-                        <input
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <button type="submit">Registration</button>
-                </form>
-            </div>
-        )
-    }
+        dispatch(postRegistration({'name': name, 'email': email, 'password': password}))
+        setName('')
+        setEmail('')
+        setPassword('')
+    }, [dispatch, email, name, password])
+
+    return (
+        <div>
+            <h1>Registration Page</h1>
+            <form
+                className="form"
+                onSubmit={handleSubmit}
+                autoComplete="off"
+            >
+                <label className="formLabel">
+                    Name
+                    <input
+                        type="text"
+                        name="name"
+                        value={name}
+                        onChange={handleName}
+                    />
+                </label>
+                <label className="formLabel">
+                    Email
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={handleEmail}
+                    />
+                </label>
+                <label className="formLabel">
+                    Password
+                    <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePassword}
+                    />
+                </label>
+                <button type="submit">Registration</button>
+            </form>
+        </div>
+    )
 }
 
-const mapDispatchToProps = {
-    onSubmit: postRegistration
-}
-
-export default connect(null, mapDispatchToProps)(LoginPage)
+export default LoginPage

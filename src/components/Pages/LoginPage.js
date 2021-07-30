@@ -1,112 +1,58 @@
-import React, { Component, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { postLogin } from '../../redux/authorization/authorizationActions'
 import './Page.css'
 
-class LoginPage extends Component {
-    state = {
-        email: '',
-        password: ''
-    }
-
-    handleChange = ({ target: { name, value } }) => {
-        this.setState({[name]: value})
-    }
-    
-    handleSubmit = (event) => {
-        event.preventDefault()
-        this.props.onLogin(this.state)
-        this.setState({email: '', password: ''})
-     }
-    
-    render() {
-        const { email, password } = this.state
-        
-        return (
-            <div>
-                <h1>Login Page</h1>
-                <form
-                    className="form"
-                    onSubmit={this.handleSubmit}
-                    autoComplete="off"
-                >
-                    <label className="formLabel">
-                        Email
-                        <input
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <label className="formLabel">
-                        Password
-                        <input
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-        )
-    }
-}
-
-/*const LoginPage = () => {
+function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const dispatch = useDispatch()
 
-    handleChange = ({ target: { name, value } }) => {
-        this.setState({[name]: value})
-    }
+    const handleEmail = useCallback(({ target }) => {
+        setEmail(target.value)
+    }, [])
+
+    const handlePassword = useCallback(({ target }) => {
+        setPassword(target.value)
+    }, [])
     
-    handleSubmit = (event) => {
+    const handleSubmit = useCallback((event) => {
         event.preventDefault()
-        this.props.onLogin(this.state)
+        dispatch(postLogin({'email': email, 'password': password}))
         setEmail('')
         setPassword('')
-     }
-    
-    render() {
+     }, [dispatch, email, password])
         
-        return (
-            <div>
-                <h1>Login Page</h1>
-                <form
-                    className="form"
-                    onSubmit={handleSubmit}
-                    autoComplete="off"
-                >
-                    <label className="formLabel">
-                        Email
-                        <input
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label className="formLabel">
-                        Password
-                        <input
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-        )
-    }
-}*/
-
-const mapDispatchToProps = {
-    onLogin: postLogin
+    return (
+        <div>
+            <h1>Login Page</h1>
+            <form
+                className="form"
+                onSubmit={handleSubmit}
+                autoComplete="off"
+            >
+                <label className="formLabel">
+                    Email
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={handleEmail}
+                    />
+                </label>
+                <label className="formLabel">
+                    Password
+                    <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePassword}
+                    />
+                </label>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    )
 }
 
-export default connect(null, mapDispatchToProps)(LoginPage)
+export default LoginPage

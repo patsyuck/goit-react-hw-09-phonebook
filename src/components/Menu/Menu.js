@@ -1,24 +1,20 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Navigation from './Navigation'
 import UserMenu from './UserMenu'
 import Authorization from './Authorization'
 import {getAuthorization} from '../../redux/authorization/authorizationSelectors'
 import './Menu.css'
 
-const Menu = ({ isAuthorized }) => {
-    return (
-        <header className="menuHeader">
-            <Navigation />
-            {isAuthorized ? <UserMenu /> : <Authorization />}
-        </header>
-    )
+function Menu() {
+  const isAuthorized = useSelector(getAuthorization)
+
+  return (
+    <header className="menuHeader">
+      <Navigation />
+      {isAuthorized ? <UserMenu /> : <Authorization />}
+    </header>
+  )
 }
 
-const mapStateToProps = state => {
-  return {
-    isAuthorized: getAuthorization(state)
-  };
-};
-
-export default connect(mapStateToProps, null)(Menu)
+export default Menu

@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getAuthorization } from '../../redux/authorization/authorizationSelectors'
 
 const styles = {
@@ -16,7 +16,9 @@ const styles = {
     }
 }
 
-const Navigation = ({ isAuthorized }) => {
+function Navigation() {
+    const isAuthorized = useSelector(getAuthorization)
+
     return (
         <div>
             <NavLink
@@ -39,10 +41,4 @@ const Navigation = ({ isAuthorized }) => {
     )
 }
 
-const mapStateToProps = state => {
-  return {
-    isAuthorized: getAuthorization(state)
-  };
-};
-
-export default connect(mapStateToProps, null)(Navigation)
+export default Navigation
