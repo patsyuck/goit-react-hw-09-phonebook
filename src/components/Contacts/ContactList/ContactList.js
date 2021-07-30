@@ -1,30 +1,27 @@
 import ContactItem from '../ContactItem/ContactItem';
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
-export class ContactList extends Component {
-  componentDidMount() {
-    this.props.onMount()
-  }
+const ContactList = ({friends, filter, onClick, onMount}) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(onMount, [])
 
-  render() {
-    return (
-      <ul>
-        {this.props.friends
-          .filter(
-            item => item.name.toLowerCase().indexOf(this.props.filter.toLowerCase()) >= 0,
-          )
-          .map(friend => (
-            <ContactItem
-              key={friend.id}
-              id={friend.id}
-              name={friend.name}
-              number={friend.number}
-              onClick={this.props.onClick}
-            />
-          ))}
-      </ul>
-    );
-  }
+  return (
+    <ul>
+      {friends
+        .filter(
+          item => item.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0,
+        )
+        .map(friend => (
+          <ContactItem
+            key={friend.id}
+            id={friend.id}
+            name={friend.name}
+            number={friend.number}
+            onClick={onClick}
+          />
+      ))}
+    </ul>
+  );
 }
 
 export default ContactList;
