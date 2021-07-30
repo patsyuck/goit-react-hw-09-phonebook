@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { getContacts, filterContacts, postContact, patchContact, deleteExistContact } from '../../redux/contacts/contactsActions';
-import { ContactForm } from '../Contacts/ContactForm/ContactForm';
+import ContactForm from '../Contacts/ContactForm/ContactForm';
 import Filter from '../Contacts/Filter/Filter';
 import ContactList from '../Contacts/ContactList/ContactList';
 import {getFriends, getFilter, getFetching} from '../../redux/contacts/contactsSelectors'

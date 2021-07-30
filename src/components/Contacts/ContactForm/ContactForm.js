@@ -1,36 +1,29 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import './ContactForm.css';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
+const ContactForm = ({friends, handlerSubmit, isFetching, handlerUpdate}) => {
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
 
-export class ContactForm extends Component {
-  state = { ...INITIAL_STATE, toggler: this.props.isFetching };
-
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value });
+  const handleName = ({ target }) => {
+    setName(target.value)
   };
 
-  reset = () => {
-    this.setState({ ...INITIAL_STATE });
+  const handleNumber = ({ target }) => {
+    setNumber(target.value)
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { name, number } = this.state;
-    
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if ((name === '') || (number === '')) {
       alert('Name and Number are required fields!')
     } else if (
-      this.props.friends.some(
+      friends.some(
         item => item.name.toLowerCase() === name.toLowerCase(),
       )
     ) {
-      const idForUpdate = this.props.friends.find(
+      const idForUpdate = friends.find(
         item => item.name.toLowerCase() === name.toLowerCase()
       ).id;
       // eslint-disable-next-line no-restricted-globals
@@ -40,7 +33,7 @@ export class ContactForm extends Component {
           name: name,
           number: number,
         };
-        this.props.handlerUpdate(idForUpdate, contact);
+        handlerUpdate(idForUpdate, contact);
       } else {
         alert('The contact was left unchanged.')
       }
@@ -50,26 +43,25 @@ export class ContactForm extends Component {
         name: name,
         number: number,
       };
-      this.props.handlerSubmit(contact);
+      handlerSubmit(contact);
     }
-
-    this.reset();
+    setName('')
+    setNumber('')
   };
 
-  render() {
-    const { name, number, toggler } = this.state;
-    return (
-      <form className="form" onSubmit={this.handleSubmit}>
-        <label>
-          Name
-          <input name="name" value={name} onChange={this.handleChange} />
-        </label>
-        <label>
-          Number
-          <input name="number" value={number} onChange={this.handleChange} />
-        </label>
-        <button type="submit" disabled={toggler}>Add contact</button>
-      </form>
-    );
-  }
+  return (
+    <form className="form" onSubmit={handleSubmit}>
+      <label>
+        Name
+        <input name="name" value={name} onChange={handleName} />
+      </label>
+      <label>
+        Number
+        <input name="number" value={number} onChange={handleNumber} />
+      </label>
+      <button type="submit" disabled={isFetching}>Add contact</button>
+    </form>
+  );
 }
+
+export default ContactForm

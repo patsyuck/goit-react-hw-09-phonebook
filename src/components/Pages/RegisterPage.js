@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { postRegistration } from '../../redux/authorization/authorizationActions'
 import './Page.css'
@@ -64,12 +64,6 @@ class LoginPage extends Component {
         )
     }
 }
-
-/*const mapDispatchToProps = dispatch => {
-    return {
-        onSubmit: credentials => dispatch(postRegistration(credentials))
-    }
-}*/
 
 const mapDispatchToProps = {
     onSubmit: postRegistration
