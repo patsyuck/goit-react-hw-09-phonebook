@@ -1,5 +1,5 @@
-import React, { Component, Suspense, lazy } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, Suspense, lazy } from 'react';
+import { useDispatch } from 'react-redux';
 import {BrowserRouter as Router, Switch, Redirect} from 'react-router-dom';
 import MyLoader from './components/Loader/Loader';
 import Menu from './components/Menu/Menu';
@@ -12,33 +12,29 @@ const LoginPage = lazy(() => import('./components/Pages/LoginPage')) /* webpackC
 const RegisterPage = lazy(() => import('./components/Pages/RegisterPage')) /* webpackChunkName: "register-page" */
 const ContactsPage = lazy(() => import('./components/Pages/ContactsPage')) /* webpackChunkName: "contacts-page" */
 
-class App extends Component {
-  componentDidMount() {
-    this.props.onRefresh()
-  }
-  
-  render() {
-    return (
-      <div>
-        <Router>
-          <Menu />
-          <Suspense fallback={<MyLoader />}>
-            <Switch>
-              <PublicRoute path="/" exact component={HomePage} />
-              <PublicRoute path="/register" component={RegisterPage} restricted />
-              <PublicRoute path="/login" component={LoginPage} restricted />
-              <PrivateRoute path="/contacts" component={ContactsPage} />
-              <Redirect to="/" />
-            </Switch>
-          </Suspense>
-        </Router>
-      </div>
-    )
-  }
+const App = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getCurrentUser())
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
+
+  return (
+    <div>
+      <Router>
+        <Menu />
+        <Suspense fallback={<MyLoader />}>
+          <Switch>
+            <PublicRoute path="/" exact component={HomePage} />
+            <PublicRoute path="/register" component={RegisterPage} restricted />
+            <PublicRoute path="/login" component={LoginPage} restricted />
+            <PrivateRoute path="/contacts" component={ContactsPage} />
+            <Redirect to="/" />
+          </Switch>
+        </Suspense>
+      </Router>
+    </div>
+  )
 }
 
-const mapDispatchToProps = {
-    onRefresh: getCurrentUser
-}
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;
