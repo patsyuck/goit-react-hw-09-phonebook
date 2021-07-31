@@ -1,7 +1,7 @@
 import React from 'react'
 import './Page.css'
 
-const emoji = String.fromCodePoint(0x1F621)
+const emoji = String.fromCodePoint(0x1F609)
 
 const HomePage = () => {
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { v4 as uuid } from 'uuid';
 import './ContactForm.css';
 
@@ -6,15 +6,15 @@ const ContactForm = ({friends, handlerSubmit, isFetching, handlerUpdate}) => {
   const [name, setName] = useState('')
   const [number, setNumber] = useState('')
 
-  const handleName = ({ target }) => {
+  const handleName = useCallback(({ target }) => {
     setName(target.value)
-  };
+  }, [])
 
-  const handleNumber = ({ target }) => {
+  const handleNumber = useCallback(({ target }) => {
     setNumber(target.value)
-  };
+  }, [])
 
-  const handleSubmit = (event) => {
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
     if ((name === '') || (number === '')) {
       alert('Name and Number are required fields!')
@@ -47,7 +47,7 @@ const ContactForm = ({friends, handlerSubmit, isFetching, handlerUpdate}) => {
     }
     setName('')
     setNumber('')
-  };
+  }, [handlerSubmit, handlerUpdate, friends, name, number])
 
   return (
     <form className="form" onSubmit={handleSubmit}>
