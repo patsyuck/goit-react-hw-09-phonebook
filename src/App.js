@@ -25,10 +25,18 @@ const App = () => {
         <Menu />
         <Suspense fallback={<MyLoader />}>
           <Switch>
-            <PublicRoute path="/" exact component={HomePage} />
-            <PublicRoute path="/register" component={RegisterPage} restricted />
-            <PublicRoute path="/login" component={LoginPage} restricted />
-            <PrivateRoute path="/contacts" component={ContactsPage} />
+            <PublicRoute path="/" exact>
+              <HomePage />
+            </PublicRoute>
+            <PublicRoute path="/register" restricted>
+              <RegisterPage />
+            </PublicRoute>
+            <PublicRoute path="/login" restricted>
+              <LoginPage />
+            </PublicRoute>
+            <PrivateRoute path="/contacts">
+              <ContactsPage />
+            </PrivateRoute>
             <Redirect to="/" />
           </Switch>
         </Suspense>
