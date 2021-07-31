@@ -1,8 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-/*axios.defaults.baseUrl = 'https://connections-api.herokuapp.com'*/
-
 const token = {
     set(token) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`
